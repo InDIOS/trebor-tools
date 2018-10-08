@@ -1,0 +1,18 @@
+{
+  "name": "trebor-tools",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "compile": "tsc -p . -w",
+    "build": "rollup -c rollup.config.js"
+  },
+  "keywords": [],
+  "author": "InDIOS",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "rollup": "^0.66.2",
+    "typescript": "^3.1.1"
+  }
+}
