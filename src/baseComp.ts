@@ -81,7 +81,7 @@ export function _$BaseComponent(attrs: AttrParams, template: TemplateFn, options
       _$define(self, key, desc);
     }
   }
-  const tpl = template(self, opts.children);
+  const tpl = template(self);
   _$each(tpl, (value, key) => {
     _$define(self, key, {
       value: (function (key) {
