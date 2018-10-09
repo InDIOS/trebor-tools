@@ -5,7 +5,7 @@
 [![Release][github-img]][github-url]
 [![Build Status][travis-image]][travis-url]
 
-A set of utilities for TreborJS 
+A set of internal tools that is used in TreborJS
 
 [npm-image]: https://img.shields.io/npm/v/trebor-tools.svg
 [npm-url]: https://npmjs.org/package/trebor-tools

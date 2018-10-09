@@ -1,8 +1,8 @@
 import {
   _$removeChild, _$extend, _$isType, _$noop,
-	_$bindClasses, _$bindStyle, _$forLoop, _$each,
-  _$addChild, _$toString, _$bindUpdate, _$textUpdate, _$nu,
   _$setReference, _$isKey, _$conditionalUpdate, _$emptyElse,
+  _$addChild, _$toString, _$bindUpdate, _$textUpdate, _$tagUpdate,
+	_$bindClasses, _$bindStyle, _$forLoop, _$each, _$bindBooleanAttr,
 } from './utilities';
 import {
 	_$el, _$svg, _$text, _$comment, _$setAttr,
