@@ -219,10 +219,14 @@ export function _$bindUpdate(el: (HTMLInputElement | HTMLSelectElement | HTMLTex
     _$setAttr(el, [attr, _value]);
   }
 }
+export function _$bindBooleanAttr(el: Element, attrAndValue: [string, any]) {
+  let [attr, value, hasAttr] = attrAndValue.concat([el.hasAttribute(attrAndValue[0])]);
+  value == null || value === false ? hasAttr && el.removeAttribute(attr) : _$setAttr(el, [attr, '']);
+}
 export function _$textUpdate(text: Text, value: string) {
   if (text.data !== (value = _$toString(value))) text.data = value;
 }
-export function _$nu<T extends keyof HTMLElementTagNameMap>(node: HTMLElement, tag: T) {
+export function _$tagUpdate<T extends keyof HTMLElementTagNameMap>(node: HTMLElement, tag: T) {
   return _$toLowerCase(tag) !== _$toLowerCase(node.tagName) ? _$assignEl(node, _$el(tag)) : node;
 }
 export function _$forLoop(root: Component, obj: any[], loop: (...args: any[]) => ComponentTemplate) {

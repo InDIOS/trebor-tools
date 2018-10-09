@@ -40,8 +40,8 @@ export function _$text(content?: string) {
 export function _$comment(content?: string) {
   return document.createComment(content || '');
 }
-export function _$setAttr(el: Element & { _value?: any }, attrOrBind: [string, any]) {
-  let [attr, value] = attrOrBind;
+export function _$setAttr(el: Element & { _value?: any }, attrAndValue: [string, any]) {
+  let [attr, value] = attrAndValue;
   el.setAttribute(attr, _$toString(value));
   if (_$isValueAttr(attr) && !_$isString(value)) el[PROP_MAP._] = value;
 }
