@@ -91,7 +91,7 @@ export function _$insertStyle(id: string, css: string) {
     isNew = true;
     style = _$el('style');
     style.id = id;
-    _$setAttr(style, ['refs', '1']);
+    _$setAttr(style, ['refs', 1]);
   }
   if (style.textContent !== css) {
     style.textContent = css;
@@ -100,7 +100,7 @@ export function _$insertStyle(id: string, css: string) {
     _$append(document.head, style);
   } else {
     let count = +_$getAttr(style, 'refs');
-    _$setAttr(style, ['refs', _$toString(++count)]);
+		_$setAttr(style, ['refs', ++count]);
   }
 }
 export function _$deleteStyle(id: string) {
@@ -110,7 +110,7 @@ export function _$deleteStyle(id: string) {
     if (--count === 0) {
       _$removeEl(style, document.head);
     } else {
-      _$setAttr(style, ['refs', _$toString(count)]);
+			_$setAttr(style, ['refs', count]);
     }
   }
 }

@@ -1,8 +1,8 @@
 import {
-  _$removeChild, _$extend, _$isType, _$noop,
-  _$setReference, _$isKey, _$conditionalUpdate, _$emptyElse,
-  _$addChild, _$toString, _$bindUpdate, _$textUpdate, _$tagUpdate,
+  _$removeChild, _$extend, _$isType, _$noop, _$componentUpdate,
 	_$bindClasses, _$bindStyle, _$forLoop, _$each, _$bindBooleanAttr,
+  _$setReference, _$isKey, _$conditionalUpdate, _$emptyElse, _$htmlUpdate,
+  _$addChild, _$toString, _$bindUpdate, _$textUpdate, _$tagUpdate, _$removeReference
 } from './utilities';
 import {
 	_$el, _$svg, _$text, _$comment, _$setAttr,
@@ -20,5 +20,5 @@ export {
   _$textUpdate, _$getValue, _$text, _$conditionalUpdate, _$bindUpdate, _$comment,
   _$extend, _$removeChild, _$bindGroup, _$emptyElse, _$BaseComponent, _$bindMultiSelect,
   _$setAttr, _$getAttr, _$addListener, _$updateListener, _$removeListener, _$bindClasses,
-  _$updateMultiSelect,
+	_$updateMultiSelect, _$componentUpdate, _$htmlUpdate, _$tagUpdate, _$bindBooleanAttr, _$removeReference
 };
