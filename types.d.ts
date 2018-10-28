@@ -39,12 +39,14 @@ interface ComponentTemplate {
   $create(): void;
   $mount(parent: string | Element, sibling?: string | boolean | Element): void;
   $update(state: Component, ...args: any[]): void;
-  $unmout(): void;
+  $unmount(): void;
   $destroy(): void;
 }
 
 interface Component extends ComponentTemplate {
   $parent: Component;
+  $parentEl: HTMLElement;
+  $siblingEl: HTMLElement;
   readonly $refs: ObjectLike<HTMLElement[]>;
   readonly $slots: ObjectLike<DocumentFragment>;
   readonly $filters: ObjectLike<(...args: any[]) => any>;

@@ -260,6 +260,13 @@ export function _$componentUpdate(parent: Component, Ctor: ComponentConstructor,
   }
   return [inst, Ctor];
 }
+export function _$destroyComponent(component: Component) {
+  component.$unmount();
+  component.$parent = null;
+  component.$parentEl = null;
+  component.$siblingEl = null;
+  component.$children.splice(0, component.$children.length);
+}
 export function _$forLoop(root: Component, obj: any[], loop: (...args: any[]) => ComponentTemplate) {
   let items: ObjectLike<ComponentTemplate> = {}, loopParent: Element, loopSibling: Element;
   let globs = _$toArgs(arguments, 3);
