@@ -249,7 +249,7 @@ export function _$componentUpdate(parent: Component, Ctor: ComponentConstructor,
     if (inst) {
       inst = _$addChild(parent, Ctor, attrs);
       inst.$create();
-      inst.$mount(el, sibling);
+      inst.$mount(el || parent.$parentEl, sibling);
     }
   }
   return [inst, Ctor];
