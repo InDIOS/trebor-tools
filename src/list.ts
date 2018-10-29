@@ -1,4 +1,4 @@
-import { PROP_MAP, _$isType, _$isArray, _$define, _$assign, _$extend, _$dispatch } from './utilities';
+import { PROP_MAP, _$isType, _$isArray, _$define, _$assign, _$extends, _$dispatch } from './utilities';
 
 const array = Array[PROP_MAP.h];
 export function _$toArgs(args: IArguments, start: number = 0): any[] {
@@ -20,7 +20,7 @@ export function _$List(value: any[], root: Component, key: string) {
   desc.writable = true;
   _$define(self, 'length', _$assign({ value: self.length }, desc));
 }
-_$extend(_$List, Array);
+_$extends(_$List, Array);
 ['pop', 'push', 'reverse', 'shift', 'sort', 'fill', 'unshift', 'splice'].forEach(method => {
   _$List[PROP_MAP.h][method] = function () {
     let self = this;

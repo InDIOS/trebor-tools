@@ -41,10 +41,7 @@ export function _$dispatch(root: Component, key: string, oldVal, value) {
   }
   root.$update();
 }
-export function _$extend(ctor: Function, exts: Function) {
-  ctor['plugin'] = function (fn: PluginFn, options?: ObjectLike<any>) {
-    TPS.push({ options, fn });
-  };
+export function _$extends(ctor: Function, exts: Function) {
   ctor[PROP_MAP.h] = Object.create(exts[PROP_MAP.h]);
   ctor[PROP_MAP.h].constructor = ctor;
 }

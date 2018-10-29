@@ -1,8 +1,8 @@
 import { _$List } from './list';
 import { _$toString, _$isString, _$isType, _$isValueAttr, PROP_MAP, _$hasProp } from './utilities';
 
-export function _$select(selector: string | Element, parent?: Element) {
-  return _$isString(selector) ? (parent || document).querySelector(<string>selector) : <Element>selector;
+export function _$select(selector: string | Element, parent?: Element): HTMLElement {
+	return _$isString(selector) ? (parent || document).querySelector(<string>selector) : <HTMLElement>selector;
 }
 export function _$docFragment() {
   return document.createDocumentFragment();
@@ -103,7 +103,7 @@ export function _$insertStyle(id: string, css: string) {
 		_$setAttr(style, ['refs', ++count]);
   }
 }
-export function _$deleteStyle(id: string) {
+export function _$removeStyle(id: string) {
   let style = _$select(`#${id}`, document.head);
   if (style) {
     let count = +_$getAttr(style, 'refs');
