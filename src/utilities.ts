@@ -1,5 +1,5 @@
 import { _$toArgs, _$List } from './list';
-import { _$el, _$getAttr, _$setAttr, _$select, _$assignEl } from './dom';
+import { _$el, _$getAttr, _$setAttr, _$select, _$assignEl, _$removeEl } from './dom';
 
 function _$toLowerCase(str: string) {
   return str.toLowerCase();
@@ -19,6 +19,9 @@ export const _$assign = Object['assign'] || function (t: Object) {
   }
   return t;
 };
+export function _$apply(callee: Function, args: any[], globs: any[], thisArg: any = null) {
+  return callee.apply(thisArg, args.concat(globs));
+}
 export function _$isValueAttr(attr: string) {
   return attr === 'value';
 }
@@ -38,10 +41,7 @@ export function _$dispatch(root: Component, key: string, oldVal, value) {
   }
   root.$update();
 }
-export function _$extend(ctor: Function, exts: Function) {
-  ctor['plugin'] = function (fn: PluginFn, options?: ObjectLike<any>) {
-    TPS.push({ options, fn });
-  };
+export function _$extends(ctor: Function, exts: Function) {
   ctor[PROP_MAP.h] = Object.create(exts[PROP_MAP.h]);
   ctor[PROP_MAP.h].constructor = ctor;
 }
@@ -135,13 +135,16 @@ export function _$toPlainObject(obj: Component) {
   });
   return _$isObject(obj) ? data : obj;
 }
-export function _$setReference(obj: Object, prop: string) {
-  const value = [];
-  _$define(obj, prop, {
-    get: () => value.length <= 1 ? value[0] : value,
-    set: val => { val && !~value.indexOf(val) && value.push(val); },
-    enumerable: true, configurable: true
-  });
+export function _$setReference(refs: Object, prop: string, node: HTMLElement) {
+  if (!_$hasProp(refs, prop)) {
+    const value = [];
+    _$define(refs, prop, {
+      get: () => value.length <= 1 ? value[0] : value,
+      set: val => { val && !~value.indexOf(val) && value.push(val); },
+      enumerable: true, configurable: true
+    });
+  }
+  refs[prop] = node;
 }
 export function _$accesor(object: Component, path: string, value?: any) {
   return path.split('.').reduce((obj, key, i, arr) => {
@@ -198,30 +201,31 @@ export function _$bindStyle(value: string | ObjectLike<any>) {
     return '';
   }
 }
-export function _$conditionalUpdate(block: { type: string } & ComponentTemplate, condition: Function, inst: Component, parent: Element, anchor: Element) {
-  if (block && block.type === condition(inst).type) {
-    block.$update(inst);
+export function _$conditionalUpdate(block: { type: string } & ComponentTemplate, condition: Function, parent: Element, anchor: Element, inst: Component) {
+  let globs = _$toArgs(arguments, 5);
+  if (block && block.type === _$apply(condition, [inst], globs).type) {
+    _$apply(block.$update, [inst], globs, block);
   } else {
     block && block.$destroy();
-    block = condition(inst);
+    block = _$apply(condition, [inst], globs);
     block.$create();
-    block.$mount(parent, anchor);
+    block.$mount(parent || inst.$parentEl, anchor);
   }
   return block;
 }
 export function _$bindUpdate(el: (HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement) & { _value: any }, binding: [string, any]) {
   let [attr, value] = binding;
-  let _value: string | boolean = attr === 'checked' ? !!value : _$toString(value);
-  if (/value|checked/.test(attr)) {
-    if (el[attr] !== _value) el[attr] = _$isValueAttr(attr) ? _value : value;
-    el[PROP_MAP._] = _$isValueAttr(attr) ? value : el[PROP_MAP.v];
+  let _value: string = _$toString(value);
+  if (_$isValueAttr(attr)) {
+    if (el[attr] !== _value) el[attr] = _value;
+    el[PROP_MAP._] = value;
   } else if (_$getAttr(el, attr) !== _value) {
     _$setAttr(el, [attr, _value]);
   }
 }
-export function _$bindBooleanAttr(el: Element, attrAndValue: [string, any]) {
-  let [attr, value, hasAttr] = attrAndValue.concat([el.hasAttribute(attrAndValue[0])]);
-  value == null || value === false ? hasAttr && el.removeAttribute(attr) : _$setAttr(el, [attr, '']);
+export function _$bindBooleanAttr(el: HTMLElement, attrAndValue: [string, any]) {
+  let [attr, value] = attrAndValue;
+  el[attr] = value == null || value === false ? (el.removeAttribute(attr), false) : (_$setAttr(el, [attr, '']), true);
 }
 export function _$textUpdate(text: Text, value: string) {
   if (text.data !== (value = _$toString(value))) text.data = value;
@@ -229,10 +233,46 @@ export function _$textUpdate(text: Text, value: string) {
 export function _$tagUpdate<T extends keyof HTMLElementTagNameMap>(node: HTMLElement, tag: T) {
   return _$toLowerCase(tag) !== _$toLowerCase(node.tagName) ? _$assignEl(node, _$el(tag)) : node;
 }
+export function _$removeReference(refs: Object, prop: string, node: HTMLElement) {
+  let nodes = refs[prop];
+  _$isArray(nodes) ? refs[prop].splice(nodes.indexOf(node), 1) : (delete refs[prop]);
+}
+export function _$htmlUpdate(node: HTMLElement, value: string) {
+  if (node.innerHTML !== (value = _$toString(value))) node.innerHTML = value;
+}
+export function _$componentUpdate(parent: Component, Ctor: ComponentConstructor, inst: Component, value: ComponentConstructor, attrs: AttrParams, el: HTMLElement, sibling: HTMLElement) {
+  if (value === Ctor) {
+    inst && inst.$update();
+  } else {
+    Ctor = value;
+    if (inst) {
+      inst.$destroy();
+      _$removeChild(parent, inst);
+    }
+    if (inst) {
+      inst = _$addChild(parent, Ctor, attrs);
+      inst.$create();
+      inst.$mount(el, sibling);
+    }
+  }
+  return [inst, Ctor];
+}
+export function _$destroyComponent(component: Component) {
+  component.$unmount();
+  component.$parent = null;
+  component.$parentEl = null;
+  component.$siblingEl = null;
+  component.$children.splice(0, component.$children.length);
+}
+export function _$setElements(component: Component, parent: HTMLElement, sibling?: HTMLElement) {
+	let brother = _$select(sibling);
+	component.$siblingEl = brother;
+	component.$parentEl = sibling && brother.parentElement || _$select(parent);
+}
 export function _$forLoop(root: Component, obj: any[], loop: (...args: any[]) => ComponentTemplate) {
   let items: ObjectLike<ComponentTemplate> = {}, loopParent: Element, loopSibling: Element;
   let globs = _$toArgs(arguments, 3);
-  _$each(obj, (item, i) => { items[i] = loop.apply(null, [root, item, i].concat(globs)); });
+  _$each(obj, (item, i, index) => { items[i] = _$apply(loop, [root, item, i, index], globs); });
   return {
     $create() {
       _$each(items, item => { item.$create(); });
@@ -244,17 +284,17 @@ export function _$forLoop(root: Component, obj: any[], loop: (...args: any[]) =>
     },
     $update(root: Component, obj: any[]) {
       let globs = _$toArgs(arguments, 2);
-      _$each(items, (item, i) => {
+      _$each(items, (item, i, index) => {
         if (obj[i]) {
-          item.$update.apply(item, [root, obj[i], i].concat(globs));
+          _$apply(item.$update, [root, obj[i], i, index], globs, item);
         } else {
           item.$destroy();
           delete items[i];
         }
       });
-      _$each(obj, (item, i) => {
+      _$each(obj, (item, i, index) => {
         if (!items[i]) {
-          items[i] = loop.apply(null, [root, item, i].concat(globs));
+          items[i] = _$apply(loop, [root, item, i, index], globs);
           items[i].$create();
           items[i].$mount(loopParent, loopSibling);
         }
@@ -265,10 +305,11 @@ export function _$forLoop(root: Component, obj: any[], loop: (...args: any[]) =>
     }
   };
 }
-export function _$each<T>(obj: T, cb: (value: IterateValue<T>, key: IterateKey<T>) => void) {
+export function _$each<T>(obj: T, cb: (value: IterateValue<T>, key: IterateKey<T>, index?: number) => void) {
+  let i = 0;
   for (const key in obj) {
     if (_$hasProp(obj, key)) {
-      cb(<any>obj[key], <any>(isNaN(+key) ? key : +key));
+      cb(<any>obj[key], <any>(isNaN(+key) ? key : +key), i++);
     }
   }
 }

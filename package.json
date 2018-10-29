@@ -1,11 +1,11 @@
 {
   "name": "trebor-tools",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {
     "compile": "tsc -p . -w",
-    "build": "rollup -c rollup.config.js"
+    "build": "tsc -p . && rollup -c rollup.config.js"
   },
   "keywords": [],
   "author": "InDIOS",

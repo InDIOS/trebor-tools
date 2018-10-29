@@ -1,10 +1,10 @@
-import { _$getValue } from './dom';
 import { _$List } from './list';
-import { _$each, _$define, PROP_MAP, TPS, _$assign, _$isType, _$isString, _$isFunction, _$hasProp, _$toType, _$directive, _$isArray, _$toPlainObject, _$accesor, _$subscribers, _$isValueAttr, _$toString } from './utilities';
+import { _$getValue } from './dom';
+import { _$each, _$define, PROP_MAP, TPS, _$assign, _$isType, _$isString, _$isFunction, _$hasProp, _$toType, _$directive, _$isArray, _$toPlainObject, _$accesor, _$subscribers, _$isValueAttr, _$toString, _$extends } from './utilities';
 
 const PROPS = ['$slots', '$refs', '$filters', '$directives', '_events', '_watchers'];
 
-export function _$BaseComponent(attrs: AttrParams, template: TemplateFn, options: ComponentOptions, parent: Component) {
+function _$BaseComponent(attrs: AttrParams, template: TemplateFn, options: ComponentOptions, parent: Component) {
   const self = this;
   const _$set = (prop: string, value: any) => { _$define(self, prop, { value, writable: true }); };
   if (!attrs) attrs = {};
@@ -165,3 +165,17 @@ _$assign(_$BaseComponent[PROP_MAP.h], {
     };
   }
 });
+
+export function _$Ctor(moduleName: string, tpl: Function, options: Object) {
+	const ctor: ComponentConstructor = <any>{
+		[moduleName](_$attrs, _$parent) {
+			_$BaseComponent.call(this, _$attrs, tpl, options, _$parent);
+			!_$parent && this.$create();
+		}
+	}[moduleName];
+	ctor.plugin = (fn: PluginFn, options?: ObjectLike<any>) => {
+		TPS.push({ options, fn });
+	};
+	_$extends(ctor, _$BaseComponent);
+	return ctor;
+}
