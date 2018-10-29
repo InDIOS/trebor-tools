@@ -1,4 +1,5 @@
-import { PROP_MAP, _$isType, _$isArray, _$define, _$assign, _$extends, _$dispatch } from './utilities';
+import { PROP_MAP } from './constants';
+import { _$isType, _$isArray, _$define, _$assign, _$extends, _$dispatch } from './utilities';
 
 const array = Array[PROP_MAP.h];
 export function _$toArgs(args: IArguments, start: number = 0): any[] {

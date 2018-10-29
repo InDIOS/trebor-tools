@@ -1,3 +1,4 @@
+import { PROP_MAP } from './constants';
 import { _$toArgs, _$List } from './list';
 import { _$el, _$getAttr, _$setAttr, _$select, _$assignEl, _$removeEl } from './dom';
 
@@ -8,16 +9,12 @@ function _$toLowerCase(str: string) {
 export function devlog(type: 'info' | 'warn' | 'error', ...msgs: any[]) {
   console[type](...msgs);
 }
-
-export const PROP_MAP = { p: '__TP__', v: 'value', _: '_value', s: '_subscribers', e: '_events', w: '_watchers', h: 'prototype' };
-export const TPS: { options: ObjectLike<any>, fn: PluginFn }[] = window[PROP_MAP.p] || (window[PROP_MAP.p] = []);
-
 export const _$assign = Object['assign'] || function (t: Object) {
-  for (let s, i = 1, n = arguments.length; i < n; i++) {
-    s = arguments[i];
-    for (const p in s) if (_$hasProp(s, p)) t[p] = s[p];
-  }
-  return t;
+	for (let s, i = 1, n = arguments.length; i < n; i++) {
+		s = arguments[i];
+		for (const p in s) if (_$hasProp(s, p)) t[p] = s[p];
+	}
+	return t;
 };
 export function _$apply(callee: Function, args: any[], globs: any[], thisArg: any = null) {
   return callee.apply(thisArg, args.concat(globs));

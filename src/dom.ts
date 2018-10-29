@@ -1,5 +1,6 @@
 import { _$List } from './list';
-import { _$toString, _$isString, _$isType, _$isValueAttr, PROP_MAP, _$hasProp } from './utilities';
+import { PROP_MAP } from './constants';
+import { _$toString, _$isString, _$isType, _$isValueAttr, _$hasProp } from './utilities';
 
 export function _$select(selector: string | Element, parent?: Element): HTMLElement {
 	return _$isString(selector) ? (parent || document).querySelector(<string>selector) : <HTMLElement>selector;
