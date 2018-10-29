@@ -267,6 +267,11 @@ export function _$destroyComponent(component: Component) {
   component.$siblingEl = null;
   component.$children.splice(0, component.$children.length);
 }
+export function _$setElements(component: Component, parent: HTMLElement, sibling?: HTMLElement) {
+	let brother = _$select(sibling);
+	component.$siblingEl = brother;
+	component.$parentEl = sibling && brother.parentElement || _$select(parent);
+}
 export function _$forLoop(root: Component, obj: any[], loop: (...args: any[]) => ComponentTemplate) {
   let items: ObjectLike<ComponentTemplate> = {}, loopParent: Element, loopSibling: Element;
   let globs = _$toArgs(arguments, 3);
