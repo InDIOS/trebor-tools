@@ -1,8 +1,7 @@
 import { _$List } from './list';
 import { _$getValue } from './dom';
-import { _$each, _$define, PROP_MAP, TPS, _$assign, _$isType, _$isString, _$isFunction, _$hasProp, _$toType, _$directive, _$isArray, _$toPlainObject, _$accesor, _$subscribers, _$isValueAttr, _$toString, _$extends } from './utilities';
-
-const PROPS = ['$slots', '$refs', '$filters', '$directives', '_events', '_watchers'];
+import { PROPS, PROP_MAP, TPS } from './constants';
+import { _$each, _$define, _$assign, _$isType, _$isString, _$isFunction, _$hasProp, _$toType, _$directive, _$isArray, _$toPlainObject, _$accesor, _$subscribers, _$isValueAttr, _$toString, _$extends } from './utilities';
 
 function _$BaseComponent(attrs: AttrParams, template: TemplateFn, options: ComponentOptions, parent: Component) {
   const self = this;
