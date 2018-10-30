@@ -1,6 +1,6 @@
 import { PROP_MAP } from './constants';
 import { _$toArgs, _$List } from './list';
-import { _$el, _$getAttr, _$setAttr, _$select, _$assignEl, _$removeEl } from './dom';
+import { _$el, _$getAttr, _$setAttr, _$select, _$assignEl, _$removeEl, _$docFragment } from './dom';
 
 function _$toLowerCase(str: string) {
   return str.toLowerCase();
@@ -171,6 +171,10 @@ export function _$emptyElse() {
 }
 export function _$isKey(event: KeyboardEvent, key: string) {
   return _$toLowerCase(event.key) === key || !!event[`${key}Key`];
+}
+export function _$emptySlot(inst: Component, slot: string) {
+	let slots = inst.$slots;
+	return slots[slot] && !slots[slot].hasChildNodes() ? (slots[slot] = _$docFragment()) : null;
 }
 export function _$bindClasses(value: string | ObjectLike<boolean> | (string | ObjectLike<boolean>)[]) {
   let classes = '';
