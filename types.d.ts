@@ -27,12 +27,12 @@ interface DirectiveOptions {
   modifiers: ObjectLike<boolean>;
 }
 
-interface ComponentOptions {
-  model: ObjectLike<any>;
-  attrs: string[] | ObjectLike<AttrDefinition>;
-  filters: ObjectLike<(...args: any[]) => any>;
-  children: ObjectLike<ComponentConstructor>;
-  directives: ObjectLike<DirectiveDefinition>;
+interface ComponentOptions extends ComponentHooks {
+	model?: ObjectLike<any>;
+  attrs?: string[] | ObjectLike<AttrDefinition>;
+  filters?: ObjectLike<(...args: any[]) => any>;
+  children?: ObjectLike<ComponentConstructor>;
+  directives?: ObjectLike<DirectiveDefinition>;
 }
 
 interface ComponentTemplate {
@@ -41,6 +41,19 @@ interface ComponentTemplate {
   $update(state: Component, ...args: any[]): void;
   $unmount(): void;
   $destroy(): void;
+}
+
+interface ComponentHooks {
+	willCreate?(this: Component): void;
+	willMount?(this: Component): void;
+	willUpdate?(this: Component): void;
+	willUnmount?(this: Component): void;
+	willDestroy?(this: Component): void;
+	didCreate?(this: Component): void;
+	didMount?(this: Component): void;
+	didUpdate?(this: Component): void;
+	didUnmount?(this: Component): void;
+	didDestroy?(this: Component): void;
 }
 
 interface Component extends ComponentTemplate {
