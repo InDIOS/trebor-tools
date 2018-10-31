@@ -3,7 +3,7 @@ import {
   _$removeChild, _$isType, _$noop, _$componentUpdate, _$bindClasses, _$bindStyle, _$forLoop,
   _$destroyComponent, _$setElements, _$conditionalUpdate, _$emptyElse, _$htmlUpdate, _$addChild,
   _$each, _$bindBooleanAttr, _$setReference, _$isKey, _$textUpdate, _$tagUpdate, _$removeReference,
-  _$toString, _$bindUpdate, _$emptySlot,
+  _$toString, _$bindUpdate, _$emptySlot, _$appendToSlot, _$declareSlots
 } from './utilities';
 import {
   _$select, _$docFragment, _$append, _$assignEl, _$removeEl, _$getAttr, _$addListener,
@@ -12,7 +12,7 @@ import {
 } from './dom';
 
 export {
-  _$bindUpdate, _$comment, _$setElements, _$emptySlot,
+	_$bindUpdate, _$comment, _$setElements, _$emptySlot, _$appendToSlot, _$declareSlots,
   _$updateMultiSelect, _$componentUpdate, _$htmlUpdate, _$tagUpdate, _$bindBooleanAttr,
   _$removeReference, _$addChild, _$textUpdate, _$getValue, _$text, _$conditionalUpdate,
   _$noop, _$toString, _$setReference, _$isType, _$isKey, _$select, _$docFragment, _$append,
