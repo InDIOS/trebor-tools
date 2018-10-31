@@ -165,13 +165,11 @@ _$assign(_$BaseComponent[PROP_MAP.h], {
   }
 });
 
-export function _$Ctor(moduleName: string, tpl: Function, options: Object) {
-	const ctor: ComponentConstructor = <any>{
-		[moduleName](_$attrs, _$parent) {
-			_$BaseComponent.call(this, _$attrs, tpl, options, _$parent);
-			!_$parent && this.$create();
-		}
-	}[moduleName];
+export function _$Ctor(tpl: Function, options: Object) {
+	const ctor: ComponentConstructor = <any>function (_$attrs, _$parent) {
+		_$BaseComponent.call(this, _$attrs, tpl, options, _$parent);
+		!_$parent && this.$create();
+	};
 	ctor.plugin = (fn: PluginFn, options?: ObjectLike<any>) => {
 		TPS.push({ options, fn });
 	};
