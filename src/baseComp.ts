@@ -1,7 +1,7 @@
 import { _$List } from './list';
 import { _$getValue } from './dom';
 import { PROPS, PROP_MAP, TPS } from './constants';
-import { _$each, _$define, _$assign, _$isType, _$isString, _$isFunction, _$hasProp, _$toType, _$directive, _$isArray, _$toPlainObject, _$accesor, _$subscribers, _$isValueAttr, _$toString, _$extends } from './utilities';
+import { _$each, _$define, _$assign, _$isType, _$isString, _$isFunction, _$hasProp, _$toType, _$directive, _$isArray, _$accesor, _$subscribers, _$isValueAttr, _$toString, _$extends, _$isObject } from './utilities';
 
 function _$BaseComponent(attrs: AttrParams, template: TemplateFn, options: ComponentOptions, parent: Component) {
   const self = this;
@@ -97,7 +97,21 @@ function _$BaseComponent(attrs: AttrParams, template: TemplateFn, options: Compo
   });
   _$define(self, '$data', {
     get() {
-      return _$toPlainObject(this);
+      return function plainObject(obj: Component) {
+        const data: ObjectLike<any> = {};
+        _$each<Component>(_$isObject(obj) ? obj : <any>{}, (value, k) => {
+          if (k[0] !== '$' && !_$isFunction(value)) {
+            if (_$isType(value, _$List)) {
+              data[k] = value.map(plainObject);
+            } else if (_$isObject(value)) {
+              data[k] = plainObject(value);
+            } else {
+              data[k] = value;
+            }
+          }
+        });
+        return _$isObject(obj) ? data : obj;
+      }(this);
     }
   });
 }

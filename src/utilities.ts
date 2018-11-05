@@ -117,21 +117,6 @@ export function _$toString(obj: any): string {
   const str: string = _$type(obj);
   return !/null|undefined/.test(str) ? obj.toString() : str;
 }
-export function _$toPlainObject(obj: Component) {
-  const data: ObjectLike<any> = {};
-  _$each(_$isObject(obj) ? obj : {}, (_v, k) => {
-    if (k[0] !== '$' && !_$isFunction(obj[k])) {
-      if (_$isType(obj[k], _$List)) {
-        data[k] = obj[k].map(_$toPlainObject);
-      } else if (_$isObject(obj[k])) {
-        data[k] = _$toPlainObject(obj[k]);
-      } else {
-        data[k] = obj[k];
-      }
-    }
-  });
-  return _$isObject(obj) ? data : obj;
-}
 export function _$setReference(refs: Object, prop: string, node: HTMLElement) {
   if (!_$hasProp(refs, prop)) {
     const value = [];
