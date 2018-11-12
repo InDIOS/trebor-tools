@@ -167,6 +167,14 @@ export function _$appendToSlot(slots: ObjectLike<DocumentFragment>, slot: string
 export function _$declareSlots($slots: ObjectLike<DocumentFragment>, slots: string[]) {
 	_$each(slots, slot => { $slots[slot] = _$docFragment(); });
 }
+export function _$filters(instance: Component, value: any) {
+  let filterArgs: any[][] = _$toArgs(arguments, 2);
+  _$each(filterArgs, args => {
+    const filter: string = args.splice(0, 1, value)[0];
+    value = _$apply(instance.$filters[filter], args, []);
+  });
+  return value;
+}
 export function _$bindClasses(value: string | ObjectLike<boolean> | (string | ObjectLike<boolean>)[]) {
   let classes = '';
   if (_$isString(value)) {
